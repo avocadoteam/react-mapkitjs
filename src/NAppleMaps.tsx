@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { PropsWithChildren } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { ColorScheme, FeatureVisibility, isOneOf, MapType } from './enums';
 import { AppleMapContext } from './mapContext';
 import { TokenManager } from './TokenManager';
