@@ -35,7 +35,7 @@
     "react-dom": "^18.0.0"
   },
   "author": "avocadoteam",
-  "license": "GNU",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@types/node": "^17.0.42",
     "@types/react": "^18.0.12",
