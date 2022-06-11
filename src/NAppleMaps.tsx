@@ -1,11 +1,9 @@
-import { useCallback } from 'react';
-import { PropsWithChildren } from 'react';
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import { ColorScheme, FeatureVisibility, isOneOf, MapType } from './enums';
 import { AppleMapContext } from './mapContext';
 import { TokenManager } from './TokenManager';
 
-type AppleMapProps = PropsWithChildren<{
+type AppleMapProps = React.PropsWithChildren<{
   token: string;
   longitude: number;
   latitude: number;
@@ -61,14 +59,14 @@ export const AppleMaps = ({
   longitude = 53.8008,
 }: AppleMapProps) => {
   // const [mapkitToken, setToken] = useState(token);
-  const canvasRef = useRef(document.createElement('canvas'));
-  const mapRef = useRef<mapkit.Map>();
-  const mapID = useRef<string>('map' + TokenManager.getInstance().getNewMapId());
-  const currentLocationRef = useRef<mapkit.Annotation>();
-  const annotationsRef = useRef<Record<string, mapkit.MarkerAnnotation>>({});
-  const initMount = useRef(true);
+  const canvasRef = React.useRef(document.createElement('canvas'));
+  const mapRef = React.useRef<mapkit.Map>();
+  const mapID = React.useRef<string>('map' + TokenManager.getInstance().getNewMapId());
+  const currentLocationRef = React.useRef<mapkit.Annotation>();
+  const annotationsRef = React.useRef<Record<string, mapkit.MarkerAnnotation>>({});
+  const initMount = React.useRef(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     TokenManager.getInstance().setToken(token);
     // setToken(token);
 
@@ -117,7 +115,7 @@ export const AppleMaps = ({
     initMount.current = false;
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (initMount.current || !mapRef.current) {
       return;
     }
@@ -151,7 +149,7 @@ export const AppleMaps = ({
     }
   }, [token, autoAdjust, latitude, longitude, zoomLevel, width, height, zoomLevel]);
 
-  const setMainCoords = useCallback(() => {
+  const setMainCoords = React.useCallback(() => {
     mapRef.current!.region = new mapkit.CoordinateRegion(
       new mapkit.Coordinate(latitude, longitude),
       new mapkit.CoordinateSpan(getZoomLevel(zoomLevel), getZoomLevel(zoomLevel)),

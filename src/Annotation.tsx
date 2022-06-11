@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { Fragment, useContext, useEffect } from 'react';
+import React from 'react';
 import { AppleMapContext } from './mapContext';
 
 type Props = {
@@ -27,10 +26,10 @@ export const Annotation = ({
   selected,
   id = Date.now().toString(),
 }: Props) => {
-  const initMount = useRef(true);
-  const { map, annotations } = useContext(AppleMapContext);
+  const initMount = React.useRef(true);
+  const { map, annotations } = React.useContext(AppleMapContext);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let coords = new mapkit.Coordinate(latitude, longitude);
     let newAnnotation = new mapkit.MarkerAnnotation(coords, {
       color,
@@ -46,7 +45,7 @@ export const Annotation = ({
     initMount.current = false;
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!id || initMount.current) {
       return;
     }
@@ -71,5 +70,5 @@ export const Annotation = ({
       annotation.coordinate = new mapkit.Coordinate(latitude, longitude);
     }
   }, [id, latitude, longitude]);
-  return <Fragment />;
+  return <React.Fragment />;
 };

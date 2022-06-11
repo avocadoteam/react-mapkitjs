@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useRef } from 'react';
+import React from 'react';
 import { AppleMapContext } from './mapContext';
 
 type Props = {
@@ -11,10 +11,10 @@ type Props = {
   subtitle?: string;
 };
 export const ImageAnnotation = ({ visible = true, latitude, longitude, selected, subtitle, title, url }: Props) => {
-  const initMount = useRef(true);
-  const { map } = useContext(AppleMapContext);
+  const initMount = React.useRef(true);
+  const { map } = React.useContext(AppleMapContext);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let coords = new mapkit.Coordinate(latitude, longitude);
     let newAnnotation = new mapkit.ImageAnnotation(coords, {
       title,
@@ -26,5 +26,5 @@ export const ImageAnnotation = ({ visible = true, latitude, longitude, selected,
     map.current?.addAnnotation(newAnnotation);
     initMount.current = false;
   }, []);
-  return <Fragment />;
+  return <React.Fragment />;
 };

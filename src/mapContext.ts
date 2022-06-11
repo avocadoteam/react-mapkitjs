@@ -1,6 +1,6 @@
-import { createContext } from 'react';
+import React from 'react';
 
-export const AppleMapContext = createContext<{
+export const AppleMapContext = React.createContext<{
   map: React.MutableRefObject<mapkit.Map | undefined>;
   annotations: React.MutableRefObject<Record<string, mapkit.MarkerAnnotation>>;
   canvas: React.MutableRefObject<HTMLCanvasElement>;

@@ -13,6 +13,7 @@
     "rootDir": ".",
     "types": ["vite/client"],
     "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src"

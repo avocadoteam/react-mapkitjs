@@ -1,6 +1,4 @@
-import { useContext, useRef } from 'react';
-import { useEffect } from 'react';
-import { Fragment } from 'react';
+import React from 'react';
 import { AppleMapContext } from './mapContext';
 type Props = {
   longitude: number;
@@ -9,10 +7,10 @@ type Props = {
 };
 
 export const CurrentLocationOverride = ({ direction, latitude, longitude }: Props) => {
-  const { canvas, map, currentLocation } = useContext(AppleMapContext);
-  const initMount = useRef(true);
+  const { canvas, map, currentLocation } = React.useContext(AppleMapContext);
+  const initMount = React.useRef(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const options = {
       data: {
         direction,
@@ -44,12 +42,12 @@ export const CurrentLocationOverride = ({ direction, latitude, longitude }: Prop
     initMount.current = false;
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (initMount.current) {
       return;
     }
     const coordinate = new mapkit.Coordinate(latitude, longitude);
     currentLocation.current!.coordinate = coordinate;
   }, [latitude, longitude]);
-  return <Fragment />;
+  return <React.Fragment />;
 };
