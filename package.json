@@ -1,18 +1,18 @@
 {
-  "name": "react-mapkitjs",
+  "name": "react-wrapper-mapkitjs",
   "version": "0.0.1",
   "description": "Modern react wrapper for apple mapkitjs",
   "files": [
     "dist"
   ],
-  "main": "dist/react-mapkitjs.umd.js",
-  "unpkg": "dist/react-mapkitjs.iife.js",
-  "jsdelivr": "dist/react-mapkitjs.iife.js",
-  "module": "./dist/react-mapkitjs.es.js",
+  "main": "dist/react-wrapper-mapkitjs.umd.js",
+  "unpkg": "dist/react-wrapper-mapkitjs.iife.js",
+  "jsdelivr": "dist/react-wrapper-mapkitjs.iife.js",
+  "module": "./dist/react-wrapper-mapkitjs.es.js",
   "exports": {
     ".": {
-      "import": "./dist/react-mapkitjs.es.js",
-      "require": "./dist/react-mapkitjs.umd.js"
+      "import": "./dist/react-wrapper-mapkitjs.es.js",
+      "require": "./dist/react-wrapper-mapkitjs.umd.js"
     }
   },
   "types": "./dist/types/index.d.ts",

@@ -9,7 +9,7 @@ export default defineConfig({
     target: 'esnext',
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'ReactMapkitjs',
+      name: 'ReactWrapperMapkitjs',
       formats: ['es', 'umd', 'iife']
     },
     rollupOptions: {
