@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { MapkitContext } from './MapkitProvider';
-import { MapOptions, propsToMapConstructionOptions } from './utils';
+import { MapOptions, MarkerOptions, propsToMapConstructionOptions, propsToMarkerConstructionOptions } from './utils';
 
-import { NumberTuple, Rect, RegionType, createCoordinate, createMapRect, createCoordinateRegionFromValues } from './utils';
+import { createCoordinate, createCoordinateRegionFromValues, createMapRect, NumberTuple, Rect, RegionType } from './utils';
 
 export const useMap = ({ addAnnotationOnClick, ...defaultOptions }: MapOptions = {}) => {
   const [defaultMapOptions] = React.useState(defaultOptions);
@@ -79,6 +79,23 @@ export const useMap = ({ addAnnotationOnClick, ...defaultOptions }: MapOptions =
         }
       },
       [map],
+    ),
+    addMarker: React.useCallback(
+      (region: RegionType, options: MarkerOptions = {}, onClick?: (e: mapkit.EventBase<mapkit.Map>) => void) => {
+        if (map && mapkit) {
+          const marker = new mapkit.MarkerAnnotation(
+            createCoordinate(region.latitude, region.longitude),
+            propsToMarkerConstructionOptions(options),
+          );
+
+          if (onClick) {
+            marker.addEventListener('select', onClick);
+          }
+
+          map.addAnnotation(marker);
+        }
+      },
+      [map, mapkit],
     ),
   };
 };

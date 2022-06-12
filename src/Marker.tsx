@@ -21,11 +21,11 @@ export const Marker: React.FC<MarkerProps> = ({ latitude, longitude, onClick, ..
         propsToMarkerConstructionOptions(options),
       );
 
-      map.addAnnotation(marker.current);
-
       if (onClick) {
         marker.current.addEventListener('select', onClick);
       }
+
+      map.addAnnotation(marker.current);
     }
     return () => {
       marker.current && map && map.removeAnnotation(marker.current);
