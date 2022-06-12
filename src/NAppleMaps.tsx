@@ -4,7 +4,6 @@ import { AppleMapContext } from './mapContext';
 
 type AppleMapProps = React.PropsWithChildren<{
   token: string;
-  mapId: string;
   longitude: number;
   latitude: number;
   zoomLevel?: number;
@@ -46,7 +45,6 @@ const getZoomLevel = (zoomLevel?: number) => {
 export const AppleMaps = (props: AppleMapProps) => {
   const {
     token,
-    mapId,
     initialMapType,
     colorScheme,
     showsCompass,
@@ -62,38 +60,32 @@ export const AppleMaps = (props: AppleMapProps) => {
   } = props;
   // const [mapkitToken, setToken] = useState(token);
   const canvasRef = React.useRef(document.createElement('canvas'));
-  const mapRef = React.useRef<mapkit.Map>();
-  const mapID = React.useRef<string>(mapId);
+  const mapkitRef = React.useRef<mapkit.Map>();
+  const mapRef = React.useRef<HTMLDivElement>(null);
   const currentLocationRef = React.useRef<mapkit.Annotation>();
   const annotationsRef = React.useRef<Record<string, mapkit.MarkerAnnotation>>({});
   const initMount = React.useRef(true);
-  const initialized = React.useRef(false);
 
   React.useEffect(() => {
-    canvasRef.current.id = 'currentLocationOverride';
-    mapkit.addEventListener('configuration-change', e => {
-      console.debug('[RW]', e.status)
-    })
-    if (!initialized.current) {
-
-      mapkit.init({
-        authorizationCallback: done => {
-          initialized.current = true;
-          done(token);
-        },
-      });
+    if (!mapRef.current) {
+      return;
     }
+    canvasRef.current.id = 'currentLocationOverride';
+    mapkit.init({
+      authorizationCallback: done => {
+        done(token);
+      },
+    });
 
+    console.debug('[RW]: init', props);
 
-    console.debug(initialized.current, '[RW]: init', props);
-
-    mapRef.current = new mapkit.Map(mapID.current);
+    mapkitRef.current = new mapkit.Map(mapRef.current!);
 
     if (initialMapType) {
       if (!isOneOf(initialMapType, MapType)) {
         console.error('Invalid initialMapType provided to AppleMaps component.');
       } else {
-        mapRef.current.mapType = initialMapType;
+        mapkitRef.current.mapType = initialMapType;
       }
     }
 
@@ -101,7 +93,7 @@ export const AppleMaps = (props: AppleMapProps) => {
       if (!isOneOf(colorScheme, ColorScheme)) {
         console.error('Invalid colorScheme provided to AppleMaps component.');
       } else {
-        mapRef.current.colorScheme = colorScheme;
+        mapkitRef.current.colorScheme = colorScheme;
       }
     }
 
@@ -109,15 +101,15 @@ export const AppleMaps = (props: AppleMapProps) => {
       if (!isOneOf(showsCompass, FeatureVisibility)) {
         console.error('Invalid showsCompass provided to AppleMaps component.');
       } else {
-        mapRef.current.showsCompass = showsCompass;
+        mapkitRef.current.showsCompass = showsCompass;
       }
     }
 
     if (showsMapTypeControl) {
-      mapRef.current.showsMapTypeControl = showsMapTypeControl;
+      mapkitRef.current.showsMapTypeControl = showsMapTypeControl;
     }
     if (showsZoomControl) {
-      mapRef.current.showsZoomControl = showsZoomControl;
+      mapkitRef.current.showsZoomControl = showsZoomControl;
     }
 
     setMainCoords();
@@ -125,7 +117,7 @@ export const AppleMaps = (props: AppleMapProps) => {
   }, []);
 
   React.useEffect(() => {
-    if (initMount.current || !mapRef.current) {
+    if (initMount.current || !mapkitRef.current) {
       return;
     }
 
@@ -133,7 +125,7 @@ export const AppleMaps = (props: AppleMapProps) => {
       if (!isOneOf(colorScheme, ColorScheme)) {
         console.error('Invalid colorScheme provided to AppleMaps component.');
       } else {
-        mapRef.current.colorScheme = colorScheme;
+        mapkitRef.current.colorScheme = colorScheme;
       }
     }
 
@@ -141,15 +133,15 @@ export const AppleMaps = (props: AppleMapProps) => {
       if (!isOneOf(showsCompass, FeatureVisibility)) {
         console.error('Invalid showsCompass provided to AppleMaps component.');
       } else {
-        mapRef.current.showsCompass = showsCompass;
+        mapkitRef.current.showsCompass = showsCompass;
       }
     }
 
     if (showsMapTypeControl) {
-      mapRef.current.showsMapTypeControl = showsMapTypeControl;
+      mapkitRef.current.showsMapTypeControl = showsMapTypeControl;
     }
     if (showsZoomControl) {
-      mapRef.current.showsZoomControl = showsZoomControl;
+      mapkitRef.current.showsZoomControl = showsZoomControl;
     }
 
     if (autoAdjust) {
@@ -158,7 +150,7 @@ export const AppleMaps = (props: AppleMapProps) => {
   }, [token, autoAdjust, latitude, longitude, zoomLevel, width, height, zoomLevel]);
 
   const setMainCoords = React.useCallback(() => {
-    mapRef.current!.region = new mapkit.CoordinateRegion(
+    mapkitRef.current!.region = new mapkit.CoordinateRegion(
       new mapkit.Coordinate(latitude, longitude),
       new mapkit.CoordinateSpan(getZoomLevel(zoomLevel), getZoomLevel(zoomLevel)),
     );
@@ -166,14 +158,14 @@ export const AppleMaps = (props: AppleMapProps) => {
 
   return (
     <div
-      id={mapID.current}
+      ref={mapRef}
       style={{
         width,
         height,
       }}
     >
       <AppleMapContext.Provider
-        value={{ currentLocation: currentLocationRef, map: mapRef, annotations: annotationsRef, canvas: canvasRef }}
+        value={{ currentLocation: currentLocationRef, map: mapkitRef, annotations: annotationsRef, canvas: canvasRef }}
       >
         {children}
       </AppleMapContext.Provider>
