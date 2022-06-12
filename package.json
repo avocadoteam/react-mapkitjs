@@ -1,6 +1,6 @@
 {
   "name": "react-wrapper-mapkitjs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Modern react wrapper for apple mapkitjs",
   "files": [
     "dist"
