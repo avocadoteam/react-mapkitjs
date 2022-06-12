@@ -1,41 +1,44 @@
-import React from 'react'
+import React from 'react';
 
-import { MapkitContext } from './MapkitProvider'
-import { MapOptions, propsToMapConstructionOptions } from './utils'
+import { MapkitContext } from './MapkitProvider';
+import { MapOptions, propsToMapConstructionOptions } from './utils';
 
-import {
-  NumberTuple,
-  Rect,
-  RegionType,
-  createCoordinate,
-  createMapRect,
-  createCoordinateRegionFromValues,
-} from './utils'
+import { NumberTuple, Rect, RegionType, createCoordinate, createMapRect, createCoordinateRegionFromValues } from './utils';
 
-export const useMap = (defaultOptions: MapOptions = {}) => {
-  const [defaultMapOptions] = React.useState(defaultOptions)
-  let { mapkit } = React.useContext(MapkitContext)
-  let mapRef = React.useRef<HTMLDivElement>(null)
-  let [map, setMap] = React.useState<mapkit.Map>()
+export const useMap = ({ addAnnotationOnClick, ...defaultOptions }: MapOptions = {}) => {
+  const [defaultMapOptions] = React.useState(defaultOptions);
+  let { mapkit } = React.useContext(MapkitContext);
+  let mapRef = React.useRef<HTMLDivElement>(null);
+  let [map, setMap] = React.useState<mapkit.Map>();
 
   React.useEffect(() => {
     if (mapkit && mapRef.current) {
-      const newMap = new mapkit.Map(
-        mapRef.current,
-        propsToMapConstructionOptions(defaultMapOptions),
-      )
-      setMap(newMap)
+      const newMap = new mapkit.Map(mapRef.current, propsToMapConstructionOptions(defaultMapOptions));
+      setMap(newMap);
+
+      if (addAnnotationOnClick) {
+        newMap.element.addEventListener('click', function (event) {
+          if ((event.target as any).parentNode !== newMap.element) {
+            // This condition prevents clicks on controls. Binding to a
+            // secondary click is another option to prevent conflict
+            return;
+          }
+          var domPoint = new DOMPoint(event.pageX, event.pageY);
+          var coordinate = newMap.convertPointOnPageToCoordinate(domPoint);
+          newMap.addAnnotation(new mapkit!.MarkerAnnotation(coordinate));
+        });
+      }
     }
-  }, [mapRef, mapkit])
+  }, [mapRef, mapkit]);
 
   // Clean up the map on unmount
   React.useEffect(() => {
     return () => {
       if (map) {
-        map.destroy()
+        map.destroy();
       }
-    }
-  }, [])
+    };
+  }, []);
 
   return {
     mapkit,
@@ -48,7 +51,7 @@ export const useMap = (defaultOptions: MapOptions = {}) => {
     setRotation: React.useCallback(
       (rotationValue: number, isAnimated: boolean = false) => {
         if (map) {
-          map.setRotationAnimated(rotationValue, isAnimated)
+          map.setRotationAnimated(rotationValue, isAnimated);
         }
       },
       [map],
@@ -56,7 +59,7 @@ export const useMap = (defaultOptions: MapOptions = {}) => {
     setCenter: React.useCallback(
       (centerValue: NumberTuple, isAnimated: boolean = false) => {
         if (map) {
-          map.setCenterAnimated(createCoordinate(...centerValue), isAnimated)
+          map.setCenterAnimated(createCoordinate(...centerValue), isAnimated);
         }
       },
       [map],
@@ -64,10 +67,7 @@ export const useMap = (defaultOptions: MapOptions = {}) => {
     setRegion: React.useCallback(
       (region: RegionType, isAnimated: boolean = false) => {
         if (map) {
-          map.setRegionAnimated(
-            createCoordinateRegionFromValues(region),
-            isAnimated,
-          )
+          map.setRegionAnimated(createCoordinateRegionFromValues(region), isAnimated);
         }
       },
       [map],
@@ -75,13 +75,10 @@ export const useMap = (defaultOptions: MapOptions = {}) => {
     setVisibleMapRect: React.useCallback(
       (visibleMapRect: Rect, isAnimated: boolean = false) => {
         if (map) {
-          map.setVisibleMapRectAnimated(
-            createMapRect(...visibleMapRect),
-            isAnimated,
-          )
+          map.setVisibleMapRectAnimated(createMapRect(...visibleMapRect), isAnimated);
         }
       },
       [map],
     ),
-  }
-}
+  };
+};

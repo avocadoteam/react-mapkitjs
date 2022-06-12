@@ -77,7 +77,8 @@ export type MapOptions = Merge<
     region?: RegionType;
     center?: NumberTuple;
     padding?: PaddingType;
-    children?: React.ReactNode
+    children?: React.ReactNode;
+    addAnnotationOnClick?: boolean;
   }
 >;
 

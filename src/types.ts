@@ -141,7 +141,7 @@ declare namespace mapkit {
     /**
      * The map's DOM element.
      */
-    readonly element: Element;
+    readonly element: HTMLDivElement;
 
     // Accessing Interaction Properties
 
