@@ -71,6 +71,9 @@ export const AppleMaps = (props: AppleMapProps) => {
 
   React.useEffect(() => {
     canvasRef.current.id = 'currentLocationOverride';
+    mapkit.addEventListener('configuration-change', e => {
+      console.debug('[RW]', e.status)
+    })
     if (!initialized.current) {
 
       mapkit.init({
