@@ -52,7 +52,7 @@ export const AppleMaps = (props: AppleMapProps) => {
     showsCompass,
     showsMapTypeControl,
     showsZoomControl,
-    // children,
+    children,
     height = '100vh',
     width = '100wh',
     zoomLevel = 6,
@@ -67,17 +67,22 @@ export const AppleMaps = (props: AppleMapProps) => {
   const currentLocationRef = React.useRef<mapkit.Annotation>();
   const annotationsRef = React.useRef<Record<string, mapkit.MarkerAnnotation>>({});
   const initMount = React.useRef(true);
+  const initialized = React.useRef(false);
 
   React.useEffect(() => {
     canvasRef.current.id = 'currentLocationOverride';
+    if (!initialized.current) {
 
-    mapkit.init({
-      authorizationCallback: done => {
-        done(token);
-      },
-    });
+      mapkit.init({
+        authorizationCallback: done => {
+          initialized.current = true;
+          done(token);
+        },
+      });
+    }
 
-    console.debug('[RW]: init', props);
+
+    console.debug(initialized.current, '[RW]: init', props);
 
     mapRef.current = new mapkit.Map(mapID.current);
 
@@ -157,16 +162,18 @@ export const AppleMaps = (props: AppleMapProps) => {
   }, [latitude, longitude, zoomLevel]);
 
   return (
-    <AppleMapContext.Provider
-      value={{ currentLocation: currentLocationRef, map: mapRef, annotations: annotationsRef, canvas: canvasRef }}
+    <div
+      id={mapID.current}
+      style={{
+        width,
+        height,
+      }}
     >
-      <div
-        id={mapID.current}
-        style={{
-          width,
-          height,
-        }}
-      />
-    </AppleMapContext.Provider>
+      <AppleMapContext.Provider
+        value={{ currentLocation: currentLocationRef, map: mapRef, annotations: annotationsRef, canvas: canvasRef }}
+      >
+        {children}
+      </AppleMapContext.Provider>
+    </div>
   );
 };
