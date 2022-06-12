@@ -1,3 +1,4 @@
+import './types'
 export * from './MapkitProvider'
 export * from './Map'
 export * from './Marker'
