@@ -13,12 +13,13 @@ type PaddingConstructorOptions = NonNullable<ConstructorParameters<typeof mapkit
 export type NumberTuple = [number, number];
 export type Rect = [number, number, number, number];
 export type PaddingType = number | PaddingConstructorOptions;
+export type ZoomLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type RegionType = {
   latitude: number;
   longitude: number;
   latitudeSpan?: number;
   longitudeSpan?: number;
-  zoomLevel?: number;
+  zoomLevel?: ZoomLevel;
 };
 export type ImageUrl = {
   '1': string;
@@ -45,7 +46,7 @@ export const createCoordinate = (latitude: number, longitude: number) => {
   return new mapkit.Coordinate(latitude, longitude);
 };
 
-export const createCoordinateSpan = (latitudeDelta?: number, longitudeDelta?: number, zoomLevel?: number) => {
+export const createCoordinateSpan = (latitudeDelta?: number, longitudeDelta?: number, zoomLevel?: ZoomLevel) => {
   return new mapkit.CoordinateSpan(
     latitudeDelta ? latitudeDelta : getZoomLevel(zoomLevel),
     longitudeDelta ? longitudeDelta : getZoomLevel(zoomLevel),
@@ -55,7 +56,7 @@ export const createCoordinateSpan = (latitudeDelta?: number, longitudeDelta?: nu
 export const createCoordinateRegionFromValues = (region: RegionType) => {
   return createCoordinateRegion(
     createCoordinate(region.latitude, region.longitude),
-    createCoordinateSpan(region.latitudeSpan, region.longitudeSpan, region.zoomLevel),
+    createCoordinateSpan(region.latitudeSpan, region.longitudeSpan, region.zoomLevel ?? 6),
   );
 };
 
@@ -112,7 +113,7 @@ export const propsToMarkerConstructionOptions = ({ padding, ...options }: Marker
   };
 };
 
-export const getZoomLevel = (zoomLevel?: number) => {
+export const getZoomLevel = (zoomLevel?: ZoomLevel) => {
   switch (zoomLevel) {
     case 0:
       return 300;
