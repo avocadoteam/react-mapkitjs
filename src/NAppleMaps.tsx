@@ -43,22 +43,23 @@ const getZoomLevel = (zoomLevel?: number) => {
   }
 };
 
-export const AppleMaps = ({
-  token,
-  mapId,
-  initialMapType,
-  colorScheme,
-  showsCompass,
-  showsMapTypeControl,
-  showsZoomControl,
-  children,
-  height = '100vh',
-  width = '100wh',
-  zoomLevel = 6,
-  autoAdjust = false,
-  latitude = -1.5491,
-  longitude = 53.8008,
-}: AppleMapProps) => {
+export const AppleMaps = (props: AppleMapProps) => {
+  const {
+    token,
+    mapId,
+    initialMapType,
+    colorScheme,
+    showsCompass,
+    showsMapTypeControl,
+    showsZoomControl,
+    // children,
+    height = '100vh',
+    width = '100wh',
+    zoomLevel = 6,
+    autoAdjust = false,
+    latitude = -1.5491,
+    longitude = 53.8008,
+  } = props;
   // const [mapkitToken, setToken] = useState(token);
   const canvasRef = React.useRef(document.createElement('canvas'));
   const mapRef = React.useRef<mapkit.Map>();
@@ -68,7 +69,6 @@ export const AppleMaps = ({
   const initMount = React.useRef(true);
 
   React.useEffect(() => {
-
     canvasRef.current.id = 'currentLocationOverride';
 
     mapkit.init({
@@ -76,6 +76,8 @@ export const AppleMaps = ({
         done(token);
       },
     });
+
+    console.debug('[RW]: init', props);
 
     mapRef.current = new mapkit.Map(mapID.current);
 
@@ -164,9 +166,7 @@ export const AppleMaps = ({
           width,
           height,
         }}
-      >
-        {children}
-      </div>
+      />
     </AppleMapContext.Provider>
   );
 };
