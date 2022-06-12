@@ -16,8 +16,9 @@ export type PaddingType = number | PaddingConstructorOptions;
 export type RegionType = {
   latitude: number;
   longitude: number;
-  latitudeSpan: number;
-  longitudeSpan: number;
+  latitudeSpan?: number;
+  longitudeSpan?: number;
+  zoomLevel?: number;
 };
 export type ImageUrl = {
   '1': string;
@@ -44,14 +45,17 @@ export const createCoordinate = (latitude: number, longitude: number) => {
   return new mapkit.Coordinate(latitude, longitude);
 };
 
-export const createCoordinateSpan = (latitudeDelta: number, longitudeDelta: number) => {
-  return new mapkit.CoordinateSpan(latitudeDelta, longitudeDelta);
+export const createCoordinateSpan = (latitudeDelta?: number, longitudeDelta?: number, zoomLevel?: number) => {
+  return new mapkit.CoordinateSpan(
+    latitudeDelta ? latitudeDelta : getZoomLevel(zoomLevel),
+    longitudeDelta ? longitudeDelta : getZoomLevel(zoomLevel),
+  );
 };
 
 export const createCoordinateRegionFromValues = (region: RegionType) => {
   return createCoordinateRegion(
     createCoordinate(region.latitude, region.longitude),
-    createCoordinateSpan(region.latitudeSpan, region.longitudeSpan),
+    createCoordinateSpan(region.latitudeSpan, region.longitudeSpan, region.zoomLevel),
   );
 };
 
@@ -106,4 +110,29 @@ export const propsToMarkerConstructionOptions = ({ padding, ...options }: Marker
     padding: padding ? createPadding(padding) : createPadding(0),
     ...options,
   };
+};
+
+export const getZoomLevel = (zoomLevel?: number) => {
+  switch (zoomLevel) {
+    case 0:
+      return 300;
+    case 1:
+      return 75;
+    case 2:
+      return 18.75;
+    case 3:
+      return 4.68;
+    case 4:
+      return 1.17;
+    case 5:
+      return 0.39;
+    case 6:
+      return 0.073;
+    case 7:
+      return 0.018;
+    case 8:
+      return 0.0045;
+    default:
+      return 0.35;
+  }
 };
