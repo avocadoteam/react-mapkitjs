@@ -1,10 +1,10 @@
 import React from 'react';
 import { ColorScheme, FeatureVisibility, isOneOf, MapType } from './enums';
 import { AppleMapContext } from './mapContext';
-import { TokenManager } from './TokenManager';
 
 type AppleMapProps = React.PropsWithChildren<{
   token: string;
+  mapId: string;
   longitude: number;
   latitude: number;
   zoomLevel?: number;
@@ -45,6 +45,7 @@ const getZoomLevel = (zoomLevel?: number) => {
 
 export const AppleMaps = ({
   token,
+  mapId,
   initialMapType,
   colorScheme,
   showsCompass,
@@ -61,14 +62,12 @@ export const AppleMaps = ({
   // const [mapkitToken, setToken] = useState(token);
   const canvasRef = React.useRef(document.createElement('canvas'));
   const mapRef = React.useRef<mapkit.Map>();
-  const mapID = React.useRef<string>('map' + TokenManager.getInstance().getNewMapId());
+  const mapID = React.useRef<string>(mapId);
   const currentLocationRef = React.useRef<mapkit.Annotation>();
   const annotationsRef = React.useRef<Record<string, mapkit.MarkerAnnotation>>({});
   const initMount = React.useRef(true);
 
   React.useEffect(() => {
-    TokenManager.getInstance().setToken(token);
-    // setToken(token);
 
     canvasRef.current.id = 'currentLocationOverride';
 
@@ -120,7 +119,6 @@ export const AppleMaps = ({
       return;
     }
 
-    TokenManager.getInstance().setToken(token);
     if (colorScheme) {
       if (!isOneOf(colorScheme, ColorScheme)) {
         console.error('Invalid colorScheme provided to AppleMaps component.');
