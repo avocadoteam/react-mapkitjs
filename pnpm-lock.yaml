@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/little-loader': ^0.2.1
   '@types/node': ^17.0.42
   '@types/react': ^18.0.12
   '@types/react-dom': ^18.0.5
@@ -9,6 +10,7 @@ specifiers:
   conventional-changelog-cli: ^2.1.1
   enquirer: ^2.3.6
   execa: ^5.0.0
+  little-loader: ^0.2.0
   prettier: ^2.6.2
   react: ^18.1.0
   react-dom: ^18.1.0
@@ -16,7 +18,11 @@ specifiers:
   typescript: ^4.7.3
   vite: ^2.9.12
 
+dependencies:
+  little-loader: 0.2.0
+
 devDependencies:
+  '@types/little-loader': 0.2.1
   '@types/node': 17.0.42
   '@types/react': 18.0.12
   '@types/react-dom': 18.0.5
@@ -344,6 +350,10 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@types/little-loader/0.2.1:
+    resolution: {integrity: sha512-Hn03ZV67sr9TXNvck6UMEEW4fgBh3TuQYvoaLPmYumL3AWPu1NDJKX/dx2/75i9N98o8cbY8OLCeZq16AoVZIA==}
     dev: true
 
   /@types/minimist/1.2.2:
@@ -1251,6 +1261,10 @@ packages:
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
+
+  /little-loader/0.2.0:
+    resolution: {integrity: sha512-MYNYfBqP/f5C7XO6MR2cylmAzAKgBkDD1UGZ4KjxFviV3mKbjOEnxVj1nhnN3i2zcwbkPeUDsjAMjLnlL9kRLA==}
+    dev: false
 
   /load-json-file/4.0.0:
     resolution: {integrity: sha512-Kx8hMakjX03tiGTLAIdJ+lL0htKnXjEZN6hk/tozf/WOuYGdZBJrZ+rCJRbVCugsjB3jMLn9746NsQIf5VjBMw==}
