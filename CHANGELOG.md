@@ -1,3 +1,5 @@
+## [0.0.6](https://github.com/avocadoteam/react-mapkitjs/compare/v0.0.5...v0.0.6) (2022-06-12)
+
 ## [0.0.5](https://github.com/avocadoteam/react-mapkitjs/compare/v0.0.4...v0.0.5) (2022-06-12)
 
 ## [0.0.4](https://github.com/avocadoteam/react-mapkitjs/compare/v0.0.3...v0.0.4) (2022-06-11)
