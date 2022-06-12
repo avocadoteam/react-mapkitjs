@@ -1,32 +1,25 @@
-import { defineConfig } from 'vite'
-import { resolve } from 'path'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
   esbuild: {
-    minify: true
+    minify: true,
   },
   build: {
-    target: 'esnext',
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'ReactWrapperMapkitjs',
-      formats: ['es', 'umd', 'iife']
+      fileName: (format) => `r-wrapper-mapkitjs.${format}.js`
     },
     rollupOptions: {
-      plugins: [
-        {
-          name: 'remove-collection-handlers',
-          transform(code, id) {
-            if (id.endsWith('reactivity.esm-bundler.js')) {
-              return code
-                .replace(`mutableCollectionHandlers,`, `null,`)
-                .replace(`readonlyCollectionHandlers,`, `null,`)
-            }
-          }
-        }
-      ]
-    }
-  }
-})
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: 'React',
+        },
+      },
+    },
+  },
+});

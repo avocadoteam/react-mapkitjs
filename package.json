@@ -5,14 +5,12 @@
   "files": [
     "dist"
   ],
-  "main": "dist/react-wrapper-mapkitjs.umd.js",
-  "unpkg": "dist/react-wrapper-mapkitjs.iife.js",
-  "jsdelivr": "dist/react-wrapper-mapkitjs.iife.js",
-  "module": "./dist/react-wrapper-mapkitjs.es.js",
+  "main": "dist/r-wrapper-mapkitjs.umd.js",
+  "module": "./dist/r-wrapper-mapkitjs.es.js",
   "exports": {
     ".": {
-      "import": "./dist/react-wrapper-mapkitjs.es.js",
-      "require": "./dist/react-wrapper-mapkitjs.umd.js"
+      "import": "./dist/r-wrapper-mapkitjs.es.js",
+      "require": "./dist/r-wrapper-mapkitjs.umd.js"
     }
   },
   "types": "./dist/types/index.d.ts",
